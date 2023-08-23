@@ -1,3 +1,25 @@
+<?php
+    include "connect.php";
+
+    $connection = connectToDB();
+
+    if(!empty($_POST['submit'])) {
+        $name = $_POST['name'];
+        $email = $_POST['email'];
+        $mobile = $_POST['mobile'];
+        $password = $_POST['password'];
+
+        $sql = "INSERT INTO `crud` (name, email, mobile, password) VALUES ('$name', '$email', '$mobile', '$password')";
+        $result = mysqli_query($connection, $sql);
+
+        if($result){
+            echo "Data inserted successfully";
+        } else {
+            die(mysqli_error($connection));
+        }
+    }
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -27,7 +49,7 @@
             <label>Password</label>
             <input type="password" name="password" class="form-control" placeholder="Enter your password" autocomplete="off" />
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary" name="submit">Submit</button>
     </form>
 </div>
 </body>
