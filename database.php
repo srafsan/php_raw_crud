@@ -13,20 +13,34 @@ class Database{
   public function __construct() {
     if(!$this->conn) {
       $this->mysqli = new mysqli($this->db_host, $this->db_user, $this->db_pass, $this->db_name);
+      $this->conn = true;
 
       if ($this->mysqli->connect_error) {
-        die("Connection failed: " . $this->mysqli->connect_error);
+        array_push($this->result, $this->mysqli->connect_error);
         return false;
       } else {
         return true;
       }
-
-      // $this->conn = true;
     }
   }
 
-  public function insert() {
+  public function insert($table, $params=array()) {
+    if(!$this->tableExists($table)){
+      return false;
+    } else {
+      $table_columns = implode(", " , array_keys($params));
+      $table_values  = implode("', '", $params);
 
+      $sql = "INSERT INTO $table ($table_columns) VALUES ('$table_values')";
+
+      if($this->mysqli->query($sql)) {
+        array_push($this->result, $this->mysqli->insert_id);
+        return true;
+      } else {
+        array_push($this->result, $this->mysqli->error);
+        return false;
+      }
+    }
   }
 
   public function update() {
@@ -39,6 +53,26 @@ class Database{
 
   public function select() {
 
+  }
+
+  public function getResult() {
+    $val = $this->result;
+    $this->result = array();
+
+    return $val;
+  }
+
+  private function tableExists($table) {
+    $sql = "SHOW TABLES FROM $this->db_name LIKE '$table'";
+    $tableInDb = $this->mysqli->query($sql);
+    if($tableInDb) {
+      if($tableInDb->num_rows == 1) {
+        return true;
+      } else {
+        array_push($this->result, $table . " does not exist in this database");
+        return false;
+      }
+    }
   }
 
   public function __destruct() {
