@@ -1,15 +1,15 @@
 <?php
-    include "connect.php";
+    include "./connect.php";
 
     $connection = connectToDB();
 
-    if(!empty($_POST['submit'])) {
+    if(isset($_POST['submit'])) {
         $name = $_POST['name'];
         $email = $_POST['email'];
         $mobile = $_POST['mobile'];
         $password = $_POST['password'];
 
-        $sql = "INSERT INTO `crud` (name, email, mobile, password) VALUES ('$name', '$email', '$mobile', '$password')";
+        $sql = "INSERT INTO `crud` (name, email, mobile, password) VALUES ('$name','$email','$mobile','$password')";
         $result = mysqli_query($connection, $sql);
 
         if($result){
@@ -18,6 +18,7 @@
             die(mysqli_error($connection));
         }
     }
+
 ?>
 
 <!doctype html>

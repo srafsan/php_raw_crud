@@ -1,0 +1,15 @@
+{
+    "name": "rafsan/php_raw_crud",
+    "autoload": {
+        "psr-4": {
+            "Rafsan\\PhpRawCrud\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "srafsan",
+            "email": "srafsan98@tutanota.com"
+        }
+    ],
+    "require": {}
+}
